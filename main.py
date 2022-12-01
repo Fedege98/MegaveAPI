@@ -18,12 +18,13 @@ f) SalesOrder
 '''
 
 
+# create a post function
 def post_data(dict_data, url, headers):
-    r = requests.request("POST", url, data=json.dumps(dict_data), headers=headers)  # simple API Post request
+    r = requests.request("POST", url, data=json.dumps(dict_data), headers=headers)  # request
 
 
-headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}  # defining the headers
-
+headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}  # header
+# product_data json
 product_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvProduct": {
@@ -35,10 +36,11 @@ product_data = {
     },
     "mvRecordAction": "Insert"
 }
-
-product_url = "https://api.megaventory.com/v2017a/Product/ProductUpdate"  # define the product url
+# URL path of the product
+product_url = "https://api.megaventory.com/v2017a/Product/ProductUpdate"
+# post function
 post_data(product_data, product_url, headers)  # and posting!
-
+# client json data
 client_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvSupplierClient": {
@@ -51,9 +53,11 @@ client_data = {
     "mvGrantPermissionsToAllUser": "true",
     "mvRecordAction": "Insert"
 }
-
-client_url = "https://api.megaventory.com/v2017a/SupplierClient/SupplierClientUpdate"  # ...also the url
-post_data(client_data, client_url, headers)  # and of course, post it!
+# url
+client_url = "https://api.megaventory.com/v2017a/SupplierClient/SupplierClientUpdate"
+# post it
+post_data(client_data, client_url, headers)
+# same
 inventory_location_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvInventoryLocation": {
@@ -63,10 +67,10 @@ inventory_location_data = {
     },
     "mvRecordAction": "Insert"
 }
-
-location_url = "https://api.megaventory.com/v2017a/InventoryLocation/InventoryLocationUpdate"  # once again, defining the specific URL in order to "contact" the API
-post_data(inventory_location_data, location_url, headers)  # posting!
-# tax data have to be defined
+# same as before, for location
+location_url = "https://api.megaventory.com/v2017a/InventoryLocation/InventoryLocationUpdate"
+post_data(inventory_location_data, location_url, headers)
+# tax json data
 tax_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvTax": {
@@ -76,13 +80,12 @@ tax_data = {
     },
     "mvRecordAction": "Insert"
 }
-
-tax_url = "https://api.megaventory.com/v2017a/Tax/TaxUpdate"  # tax API/GET url definition
+# api path
+tax_url = "https://api.megaventory.com/v2017a/Tax/TaxUpdate"
+# post location
 post_data(tax_data, tax_url, headers)
 
-"""Discount - POST"""
-
-# finally, following the same procedure for the discount entity
+# discount json object
 discount_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvDiscount": {
@@ -93,16 +96,19 @@ discount_data = {
     },
     "mvRecordAction": "Insert"
 }
-
+# discount url
 discount_url = "https://api.megaventory.com/v2017a/Discount/DiscountUpdate"
-post_data(discount_data, discount_url, headers)  # and posting it!
+# post it
+post_data(discount_data, discount_url, headers)
 
 
+# get method function
 def get_data(url, params):
-    req = requests.request("GET", url, json=params)  # a simple GET request to the API
-    return req  # and of course return it
+    req = requests.request("GET", url, json=params)
+    return req
 
 
+# client data request
 client_parameters = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "Filters": [
@@ -121,14 +127,13 @@ client_parameters = {
 }
 
 client_url = "https://api.megaventory.com/v2017a/SupplierClient/SupplierClientGet"
-req = get_data(client_url, client_parameters)  # fetching the data...
+req = get_data(client_url, client_parameters)  # get the client data
 
-response = req.json()  # turning the response in a json file...
-print('The response in JSON form looks like this:\n\n', response)  # let's print the response
+response = req.json()  # json response
 
-client_id = response['mvSupplierClients'][0]['SupplierClientID']  # extracting the needed information
+client_id = response['mvSupplierClients'][0]['SupplierClientID']  # try to extract informations
 
-"""Inventory Location - GET"""
+# location get data
 
 location_parameters = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
@@ -142,16 +147,14 @@ location_parameters = {
 }
 
 location_url = "https://api.megaventory.com/v2017a/InventoryLocation/InventoryLocationGet"
-# location_req = requests.request("GET", url, json = location_parameters)
+
 location_req = get_data(location_url, location_parameters)
 
-location_response = location_req.json()
-print('The response in JSON form looks like this:\n\n', location_response)
+location_response = location_req.json()  # location response
 
-location_id = location_response['mvInventoryLocations'][0]['InventoryLocationID']
+location_id = location_response['mvInventoryLocations'][0]['InventoryLocationID']  # extract informations
 
-
-#Tax - GET
+# tax requesta data
 
 
 tax_parameters = {
@@ -166,15 +169,13 @@ tax_parameters = {
 }
 
 tax_url = "https://api.megaventory.com/v2017a/Tax/TaxGet"
-# tax_req = requests.request("GET", url, json = tax_parameters)
 tax_req = get_data(tax_url, tax_parameters)
 
-tax_response = tax_req.json()
-print('The response in JSON form looks like this:\n\n', tax_response)
+tax_response = tax_req.json()  # tax.tojson
 
 tax_id = tax_response['mvTaxes'][0]['TaxID']
 
-"""Discount - GET"""
+# discount get json
 
 discount_parameters = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
@@ -189,16 +190,12 @@ discount_parameters = {
 
 discount_url = "https://api.megaventory.com/v2017a/Discount/DiscountGet"
 discount_req = requests.request("GET", discount_url, json=discount_parameters)
-#discount_req = get_data(discount_url, discount_parameters)
 
 discount_response = discount_req.json()
-print('The response in JSON form looks like this:\n\n', discount_response)
 
 discount_id = discount_response['mvDiscounts']
-"""Last but not least, it is time to post the Sales Order data. I am following the API's documentation lead...
-Sales Order - POST
-"""
 
+# create a general order with data obtained
 sales_order_data = {
     "APIKEY": "f7b3a5e056ed17d6@m137302",
     "mvSalesOrder": {
@@ -222,4 +219,4 @@ sales_order_data = {
 }
 
 sales_order_url = "https://api.megaventory.com/v2017a/SalesOrder/SalesOrderUpdate"
-post_data(sales_order_data, sales_order_url, headers)
+post_data(sales_order_data, sales_order_url, headers)  # posting the order data to the API path
